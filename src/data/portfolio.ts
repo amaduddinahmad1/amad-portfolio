@@ -198,7 +198,7 @@ export const navLinks = [
 
 export const seo = {
   /** The live address. Change this one line if the domain changes. */
-  siteUrl: "https://amaduddin.vercel.app",
+  siteUrl: "https://amaduddinahmad.vercel.app",
   title: "Amad Ud Din Ahmad | AI & Machine Learning Engineer",
   description:
     "AI/ML Engineer building LLM apps, RAG pipelines, AI agents and deep learning models. Open to full-time roles and freelance projects.",
