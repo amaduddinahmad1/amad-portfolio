@@ -1,26 +1,132 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* `dark:` utilities follow the data-theme attribute set on <html>. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ------------------------------------------------------------------ */
+/* Color tokens. Dark is the default; light overrides it.              */
+/* ------------------------------------------------------------------ */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0a0a0f;
+  --surface: #111118;
+  --surface-2: #181821;
+  --border: rgb(255 255 255 / 0.08);
+  --border-strong: rgb(255 255 255 / 0.16);
+  --fg: #ececf1;
+  --muted: #a1a1b0;
+  --accent: #22d3ee;
+  --accent-fg: #06121a;
+  --violet: #8b5cf6;
+  --grid-line: rgb(255 255 255 / 0.045);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --border: rgb(15 23 42 / 0.1);
+  --border-strong: rgb(15 23 42 / 0.2);
+  --fg: #0f172a;
+  --muted: #475569;
+  /* Darker cyan so accent text and buttons reach AA contrast (4.5:1) in light mode. */
+  --accent: #0e7490;
+  --accent-fg: #ffffff;
+  --violet: #7c3aed;
+  --grid-line: rgb(15 23 42 / 0.06);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-violet: var(--violet);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+/* Keep section headings clear of the sticky navbar when scrolled to. */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Helpers                                                             */
+/* ------------------------------------------------------------------ */
+
+/* Subtle grid texture for the hero background, faded at the edges. */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, var(--accent), var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Show the icon that matches the action: sun in dark mode, moon in light. */
+[data-theme="light"] .theme-icon-sun,
+[data-theme="dark"] .theme-icon-moon {
+  display: none;
 }
